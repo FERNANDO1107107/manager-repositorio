@@ -1,8 +1,5 @@
-﻿# REPOSITORIO MANAGER
+﻿# ADMMANAGER
 
-Repositorio Manager Script 
-
- • EN ESTE REPOSITORIO SE ENCUENTRAN LOS ARCHIVOS ORIGINALES DE AMBOS MÁNAGER
 
 
 ================================================================================
@@ -13,4 +10,3 @@ Repositorio Manager Script
 
 ☆ https://t.me/admmanagerfree ☆
 =================================================
-
