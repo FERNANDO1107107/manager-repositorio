@@ -1,16 +1,22 @@
 ﻿# REPOSITORIO MANAGER
 
-Repositorio Manager Script 
+**Repositorio Manager Script**
 
- • EN ESTE REPOSITORIO SE ENCUENTRAN LOS ARCHIVOS ORIGINALES DE AMBOS MÁNAGER
+ • EN ESTE REPOSITORIO SE ENCUENTRAN LOS ARCHIVOS ORIGINALES DE LOS SCRIPTS MÁNAGER
 
 
-================================================================================
+```
+* SIN MINERIA! 
+* SIN KEYS! 
+* VERSION GRATUITA 
+* SIN VIRUS TROJANO (BOTNET) 
+* ARCHIVOS LIBERADOS (DECENCRIPTADOS)
+```
 
-*SIN MINERIA! *SIN KEYS! *VERSION GRATUITA *SIN VIRUS TROJANO (BOTNET) *ARCHIVOS LIBERADOS (DECENCRIPTADOS)
-
-================================================================================
-
+```
 ☆ https://t.me/admmanagerfree ☆
-=================================================
 
+☆ https://github.com/AAAAAEXQOSyIpN2JZ0ehUQ ☆
+```
+
+**By: [ FULL SCRIPTS ⃘⃤꙰✰ ] VPS**
