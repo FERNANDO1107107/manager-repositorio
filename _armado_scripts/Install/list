@@ -1,5 +1,4 @@
 #!/bin/bash
-_lvk=$(wget -qO- sshplus.xyz/script/versao)
 IP=$(wget -qO- ipv4.icanhazip.com/)
 IP2=$(wget -qO- http://whatismyip.akamai.com/)
 [[ "$IP" != "$IP2" ]] && ipdovps="$IP2" || ipdovps="$IP"
@@ -8,10 +7,12 @@ rm -rf /etc/SSHPlus/bot /etc/SSHPlus/ShellBot.sh /etc/SSHPlus/cabecalho /etc/SSH
 echo -e "America/Sao_Paulo" > /etc/timezone
 ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime > /dev/null 2>&1
 dpkg-reconfigure --frontend noninteractive tzdata > /dev/null 2>&1
-echo -e '1.2' > /usr/lib/ADMNETFREE && cat /usr/lib/ADMNETFREE > /usr/lib/ADMNETFREE
+echo -e '1.2.' > /usr/lib/ADMNETFREE && cat /usr/lib/ADMNETFREE > /usr/lib/license
 [[ ! -d /home/DATABASE ]] && mkdir /home/DATABASE
 [[ ! -d /home/DATABASE/backups ]] && mkdir /home/DATABASE/backups
 [[ ! -d /home/DATABASE/files ]] && mkdir /home/DATABASE/files
+[[ ! -e /home/DATABASE/ADMVPS-userlock ]] && touch /home/DATABASE/ADMVPS-userlock
+[[ ! -e /home/DATABASE/bannerssh.txt ]] && touch /home/DATABASE/bannerssh.txt
 [[ ! -d /home/DATABASE/files/userteste ]] && mkdir /home/DATABASE/files/userteste
 [[ ! -d /etc/ADMVPS ]] && mkdir /etc/ADMVPS
 [[ ! -e /etc/SSHPlus ]] && mkdir /etc/SSHPlus
@@ -129,7 +130,6 @@ chmod +x /etc/autostart
 #INICIO
 [[ $(crontab -l|grep -c "autostart") = '0' ]] && (crontab -l 2>/dev/null; echo "@reboot /etc/autostart") | crontab -
 [[ $(crontab -l|grep -c "autostart") = '1' ]] && (crontab -l 2>/dev/null; echo "* * * * * /etc/autostart") | crontab -
-echo "$_lvk" |sed -n '1 p' |cut -d' ' -f2 > /bin/versao && cat /bin/versao > /home/sshplus
 service ssh restart > /dev/null 2>&1
 [[ -d /var/www/html/openvpn ]] && service apache2 restart > /dev/null 2>&1
 rm -rf $home/list > /dev/null 2>&1
