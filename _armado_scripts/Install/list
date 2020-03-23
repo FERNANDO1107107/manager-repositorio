@@ -13,9 +13,8 @@ echo -e '1.2' > /usr/lib/ADMNETFREE && cat /usr/lib/ADMNETFREE > /usr/lib/ADMNET
 [[ ! -d /home/DATABASE/backups ]] && mkdir /home/DATABASE/backups
 [[ ! -d /home/DATABASE/files ]] && mkdir /home/DATABASE/files
 [[ ! -d /home/DATABASE/files/userteste ]] && mkdir /home/DATABASE/files/userteste
-[[ ! -e /home/DATABASE/files/users.db ]] && touch /home/DATABASE/files/users.db
 [[ ! -d /etc/ADMVPS ]] && mkdir /etc/ADMVPS
-[[ ! -d /etc/SSHPlus ]] && mkdir /etc/SSHPlus
+[[ ! -e /etc/SSHPlus ]] && mkdir /etc/SSHPlus
 [[ ! -d /etc/SSHPlus/senha ]] && mkdir /etc/SSHPlus/senha
 netstat -nplt| grep -w 'apache2' |grep -w '80' && sed -i "s/Listen 80/Listen 81/g" /etc/apache2/ports.conf && service apache2 restart
 [[ "$(grep -o '#Port 22' /etc/ssh/sshd_config)" == "#Port 22" ]] && sed -i "s;#Port 22;Port 22;" /etc/ssh/sshd_config && service ssh restart
@@ -23,76 +22,76 @@ grep -v "^PasswordAuthentication" /etc/ssh/sshd_config > /tmp/passlogin && mv /t
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 service ssh restart
 
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/addhost.sh -O /bin/addhost > /dev/null 2>&1
-chmod +x /bin/addhost
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/ajuda.sh -O /bin/ajuda > /dev/null 2>&1
-chmod +x /bin/ajuda
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/alterarlimite.sh -O /bin/alterarlimite > /dev/null 2>&1
-chmod +x /bin/alterarlimite
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/alterarsenha.sh -O /bin/alterarsenha > /dev/null 2>&1
-chmod +x /bin/alterarsenha
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/attscript.sh -O /bin/attscript > /dev/null 2>&1
-chmod +x /bin/attscript
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/badvpn.sh -O /bin/badvpn > /dev/null 2>&1
-chmod +x /bin/badvpn
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/banner.sh -O /bin/banner > /dev/null 2>&1
-chmod +x /bin/banner
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/blockt.sh -O /bin/blockt > /dev/null 2>&1
-chmod +x /bin/blockt
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/botssh.sh -O /bin/botssh > /dev/null 2>&1
-chmod +x /bin/botssh
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/conexao.sh -O /bin/conexao > /dev/null 2>&1
-chmod +x /bin/conexao
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/criarteste.sh -O /bin/criarteste > /dev/null 2>&1
-chmod +x /bin/criarteste
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/criarusuario.sh -O /bin/criarusuario > /dev/null 2>&1
-chmod +x /bin/criarusuario
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/delhost.sh -O /bin/delhost > /dev/null 2>&1
-chmod +x /bin/delhost
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/delscript.sh -O /bin/delscript > /dev/null 2>&1
-chmod +x /bin/delscript
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/detalhes.sh -O /bin/detalhes > /dev/null 2>&1
-chmod +x /bin/detalhes
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/droplimiter.sh -O /bin/droplimiter > /dev/null 2>&1
-chmod +x /bin/droplimiter
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/expcleaner.sh -O /bin/expcleaner > /dev/null 2>&1
-chmod +x /bin/expcleaner
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/infousers.sh -O /bin/infousers > /dev/null 2>&1
-chmod +x /bin/infousers
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/limiter.sh -O /bin/limiter > /dev/null 2>&1
-chmod +x /bin/limiter
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/menu.sh -O /bin/menu > /dev/null 2>&1
-chmod +x /bin/menu
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/mudardata.sh -O /bin/mudardata > /dev/null 2>&1
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/autorun -O /bin/autorun > /dev/null 2>&1
+chmod +x /bin/autorun
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/badudp -O /bin/badudp > /dev/null 2>&1
+chmod +x /bin/badudp
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/bannerssh -O /bin/bannerssh > /dev/null 2>&1
+chmod +x /bin/bannerssh
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/blockuser -O /bin/blockuser > /dev/null 2>&1
+chmod +x /bin/blockuser
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/criaruser -O /bin/criaruser > /dev/null 2>&1
+chmod +x /bin/criaruser
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/expirados -O /bin/expirados > /dev/null 2>&1
+chmod +x /bin/expirados
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/informacoes -O /bin/informacoes > /dev/null 2>&1
+chmod +x /bin/informacoes
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_dropbear -O /bin/inst_dropbear > /dev/null 2>&1
+chmod +x /bin/inst_dropbear
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_open -O /bin/inst_open > /dev/null 2>&1
+chmod +x /bin/inst_open
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_shadowsocks -O /bin/inst_shadowsocks > /dev/null 2>&1
+chmod +x /bin/inst_shadowsocks
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_socks -O /bin/inst_socks > /dev/null 2>&1
+chmod +x /bin/inst_socks
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_squid -O /bin/inst_squid > /dev/null 2>&1
+chmod +x /bin/inst_squid
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/inst_sslstunel -O /bin/inst_sslstunel > /dev/null 2>&1
+chmod +x /bin/inst_sslstunel
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/instalar -O /bin/instalar > /dev/null 2>&1
+chmod +x /bin/instalar
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/limiterconex -O /bin/limiterconex > /dev/null 2>&1
+chmod +x /bin/limiterconex
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/limitermenu -O /bin/limitermenu > /dev/null 2>&1
+chmod +x /bin/limitermenu
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/limiterstart -O /bin/limiterstart > /dev/null 2>&1
+chmod +x /bin/limiterstart
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/limparcache -O /bin/limparcache > /dev/null 2>&1
+chmod +x /bin/limparcache
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/menubackup -O /bin/menubackup > /dev/null 2>&1
+chmod +x /bin/menubackup
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/monitoring -O /bin/monitoring > /dev/null 2>&1
+chmod +x /bin/monitoring
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/mudardata -O /bin/mudardata > /dev/null 2>&1
 chmod +x /bin/mudardata
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/otimizar.sh -O /bin/otimizar > /dev/null 2>&1
-chmod +x /bin/otimizar
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/reiniciarservicos.sh -O /bin/reiniciarservicos > /dev/null 2>&1
-chmod +x /bin/reiniciarservicos
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/reiniciarsistema.sh -O /bin/reiniciarsistema > /dev/null 2>&1
-chmod +x /bin/reiniciarsistema
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/remover.sh -O /bin/remover > /dev/null 2>&1
-chmod +x /bin/remover
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/senharoot.sh -O /bin/senharoot > /dev/null 2>&1
-chmod +x /bin/senharoot
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/speedtest.sh -O /bin/speedtest > /dev/null 2>&1
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/mudarsenha -O /bin/mudarsenha > /dev/null 2>&1
+chmod +x /bin/mudarsenha
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/portas -O /bin/portas > /dev/null 2>&1
+chmod +x /bin/portas
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/reiniciar_vps -O /bin/reiniciar_vps > /dev/null 2>&1
+chmod +x /bin/reiniciar_vps
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/removebackup -O /bin/removebackup > /dev/null 2>&1
+chmod +x /bin/removebackup
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/removeuser -O /bin/removeuser > /dev/null 2>&1
+chmod +x /bin/removeuser
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/speedtest -O /bin/speedtest > /dev/null 2>&1
 chmod +x /bin/speedtest
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/sshmonitor.sh -O /bin/sshmonitor > /dev/null 2>&1
-chmod +x /bin/sshmonitor
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/uexpired.sh -O /bin/uexpired > /dev/null 2>&1
-chmod +x /bin/uexpired
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/userbackup.sh -O /bin/userbackup > /dev/null 2>&1
-chmod +x /bin/userbackup
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/verifbot.sh -O /bin/verifbot > /dev/null 2>&1
-chmod +x /bin/verifbot
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/verifatt.sh -O /bin/verifatt > /dev/null 2>&1
-chmod +x /bin/verifatt
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/bot.sh -O /etc/SSHPlus/bot > /dev/null 2>&1
-chmod +x /etc/SSHPlus/bot
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/cabecalho.sh -O /etc/SSHPlus/cabecalho > /dev/null 2>&1
-chmod +x /etc/SSHPlus/cabecalho
-wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/SSHPLUS-MANAGER-FREE/master/Modulos/proxy.py -O /etc/SSHPlus/proxy.py > /dev/null 2>&1
-chmod +x /etc/SSHPlus/proxy.py
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/tcpspeed -O /bin/tcpspeed > /dev/null 2>&1
+chmod +x /bin/tcpspeed
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/uninstall -O /bin/uninstall > /dev/null 2>&1
+chmod +x /bin/uninstall
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/userdetalhes -O /bin/userdetalhes > /dev/null 2>&1
+chmod +x /bin/userdetalhes
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/usermenu -O /bin/usermenu > /dev/null 2>&1
+chmod +x /bin/usermenu
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/userteste -O /bin/userteste > /dev/null 2>&1
+chmod +x /bin/userteste
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/velocidade -O /bin/velocidade > /dev/null 2>&1
+chmod +x /bin/velocidade
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/proxy.py -O /etc/ADMVPS/proxy.py > /dev/null 2>&1
+chmod +x /bin/proxy.py
+wget https://raw.githubusercontent.com/AAAAAEXQOSyIpN2JZ0ehUQ/REPOSITORIO-MANAGER/master/_armado_scripts/Modulos/pwd.pwd -O /etc/ADMVPS/pwd.pwd > /dev/null 2>&1
+chmod +x /bin/pwd.pwd
 
 _dir1='/bin'
 _dir2='/etc/SSHPlus'
