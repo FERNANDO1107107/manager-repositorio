@@ -1,0 +1,122 @@
+#!/bin/bash
+USERS_DATABASE="/root/usuarios.db"
+linha="\033[0m\e[34m========================================" 
+[[ ! -e /usr/lib/ADMNETFREE ]] && rm -rf /bin/limiterconex > /dev/null 2>&1  
+clear    
+echo -e "$linha"   
+echo -e "\033[01;37m LISTA DE USUÁRIOS E LIMITE DE CONEXÕES"
+echo -e "$linha"      
+USERS_NUMBER=$(awk 'END{print NR}' $USERS_DATABASE)
+if [ $USERS_NUMBER = "0" ]; then
+  echo -e "\033[01;37mNenhum usuário criado no momento!"
+  echo -e "$linha"
+  echo -ne "\033[01;36mDESEJA CRIAR UM USUARIO?\033[01;32m [s/n]:\033[01;37m "; read CREATE
+      
+      if [ "$CREATE" = "s" ]; then
+          criaruser
+      elif [ "$CREATE" = "n" ]; then
+          usermenu
+      else
+          limiterconex
+      fi
+else
+	i=0
+	echo -e "\033[01;37m 0:\033[01;32m RETORNAR AO MENU."
+	echo ""
+	_userT=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody)
+    while read users
+       do
+           user="$(echo $users | cut -d' ' -f1)"
+           i=$(expr $i + 1)
+           oP+=$i
+           [[ $i == [1-9] ]] && oP+=" 0$i" && i=0$i
+           oP+=":$user\n"
+           if [[ "$(grep -wc "$users" $USERS_DATABASE)" != "0" ]]; then
+			limit=$(grep -w "$users" $USERS_DATABASE |cut -d' ' -f2)
+		else
+			limit='1'
+		fi
+           _user=$(echo -e "\033[1;31m $i \033[1;37m- \033[1;37m$user\033[0m")
+           lim=$(echo -e "\033[1;33mLimite\033[1;37m: $limit")
+           printf '%-45s%s\n' "$_user" "$lim"
+          
+       done <<< "${_userT}"
+  echo -e "$linha"   
+    num_user=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
+  echo -ne "\033[1;36m Nome ou N° do Usuario \033[1;31m0\033[1;37m-\033[1;31m$num_user\033[1;37m: " ; read option
+if [[ -z $option ]]; then
+  echo ""
+  echo -e "\033[1;31mErro! \033[1;37mVocê não digitou um nome de usuário! Tente novamente.\033[0m"
+  sleep 2s
+  limiterconex
+  exit 1
+	fi
+	if [ "$option" = "0" ]; then
+  usermenu
+  exit
+else
+    usuario=$(echo -e "$oP" | grep -E "\b$option\b" | cut -d: -f2)
+	if [[ -z $usuario ]]
+	then
+	echo ""
+  echo -e "\033[1;31mErro! \033[1;37mEste usuário é inexistente na lista de usuários! Tente novamente.\033[0m"
+  sleep 2s
+  limiterconex
+  exit 1
+else
+if [[ `grep -c "^$usuario " $USERS_DATABASE` -gt 0 ]]
+		then
+	echo -ne "\033[01;36mN° de conexões para\033[01;33m $usuario:\033[01;37m "; read NUMBER
+if echo $NUMBER | grep -q '[^0-9R]'; then
+  echo ""
+  echo -e "\033[1;31mErro! \033[1;37mVocê digitou um número inválido! Tente novamente.\033[0m"
+  sleep 2s
+  limiterconex
+  exit 1
+else
+if [ -z $NUMBER ]; then
+  echo ""
+  echo -e "\033[1;31mErro! \033[1;37mVocê não digitou um número! Tente novamente.\033[0m"
+  sleep 2s
+  limiterconex
+  exit 1
+else
+if [ "$NUMBER" = "0" ]; then
+  usermenu
+  exit
+else
+if [ "$NUMBER" = "R" ]; then
+  limiterconex
+  exit
+else
+  cat $USERS_DATABASE | grep -w "$usuario" | cut -d " " -f2 > password.txt
+  cat $USERS_DATABASE | grep -wv "$usuario" > limit.txt
+  mv limit.txt $USERS_DATABASE
+  echo "$usuario $NUMBER" >> $USERS_DATABASE
+  echo ""
+  echo -e "\033[01;32mLimite alterado com sucesso!"
+  echo ""
+  echo -e "\033[01;36mLimite alterado para:\033[01;37m $NUMBER"
+  echo ""
+  read -p "$(echo -e "\033[01;37mMudar limite de mais um?\033[01;32m [s/n]:\033[01;37m")" -e -i n resp
+	if [ "$resp" == "s" ]; then
+	limiterconex
+	elif [ "$resp" == "n" ]; then
+	h
+  echo ""
+  exit
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+fi
+
+
+
+
+
+

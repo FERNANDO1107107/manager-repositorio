@@ -1,0 +1,194 @@
+#!/bin/bash
+
+BACKUPS_FOLDER="/home/DATABASE/backups"
+DATABASE="/home/DATABASE/files/users.db"
+linha="\033[0m\e[34m================================="  
+function CREATE_BACKUP ()
+{
+clear
+tput bold; tput setaf 3; echo -n "LISTA DE BACKUPS CRIADOS: "; tput setaf 2; echo "[0: RETORNAR AO MENU.]"
+echo
+BACKUPS_NUMBER=$(ls $BACKUPS_FOLDER | wc -l)
+if [ $BACKUPS_NUMBER = "0" ]; then
+    BACKUPS_NUMBER="1"
+    tput bold; tput setaf 1; echo "VOCE NÃO POSSUI NENHUM BACKUP CRIADO!"
+else
+    for BACKUPS in `ls $BACKUPS_FOLDER | sort | sed "s/.zip//g"`; do
+        tput bold; tput setaf 7; echo " $BACKUPS"
+    done
+fi
+  echo
+  tput bold; tput setaf 6; echo -n "DIGITE UM NOME PARA O BACKUP: "; tput setaf 7; read NAME
+  while true; do
+    if [ -z $NAME ] ; then
+        echo
+        tput bold; tput setaf 7; tput setab 1; echo "Digite um nome para criar o backup!"; tput sgr0
+        sleep 3s
+        tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "DIGITE UM NOME PARA O BACKUP: "; tput setaf 7; read NAME
+   elif  [ "$NAME" = "0" ]; then
+       menubackup
+       exit
+   elif ls $BACKUPS_FOLDER | grep -xq "$NAME.zip"; then
+       echo
+       tput bold; tput setaf 7; tput setab 1; echo "Este backup já existe na lista de backups criados! Tente outro nome."; tput sgr0
+       sleep 3s
+       tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "DIGITE UM NOME PARA O BACKUP: "; tput setaf 7; read NAME
+   else
+       cd $BACKUPS_FOLDER
+       tar -cvf $NAME.zip $DATABASE /etc/passwd /etc/shadow&> /dev/null &
+       while [ ! -e "$BACKUPS_FOLDER/$NAME.zip" ]; do
+         tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 2; echo "CRIANDO BACKUP."; sleep 0.4s
+         tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 2; echo "CRIANDO BACKUP.."; sleep 0.4s
+         tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 2; echo "CRIANDO BACKUP..."; sleep 0.4s
+         if [ -e "$BACKUPS_FOLDER/$NAME.zip" ]; then
+             tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 2; echo "BACKUP CRIADO COM SUCESSO!"
+             echo ""
+             echo -e "\033[01;37mLOCALIZAÇÃO:\033[01;33m $BACKUPS_FOLDER/$NAME.zip"
+             sleep 5s
+             CREATE_BACKUP
+             exit
+         fi
+      done
+   fi
+ done
+}
+
+function IMPORT_BACKUP ()
+{
+  clear
+  tput bold; tput setaf 3; echo -n "LISTA DE BACKUPS CRIADOS: "; tput setaf 2; echo "[0: RETORNAR AO MENU.]"
+  echo
+  BACKUPS_NUMBER=$(ls $BACKUPS_FOLDER | wc -l)
+  if [ $BACKUPS_NUMBER = "0" ]; then
+      tput bold; tput setaf 1; echo "VOCE NÃO POSSUI NENHUM BACKUP CRIADO!"
+      tput bold; tput setaf 7; echo "CRIE UM BACKUP PARA PROSSEGUIR COM ESTA FUNÇÃO!"
+      echo
+      tput bold; tput setaf 6; echo -n "DESEJA CRIAR UM BACKUP? [s/n]: "; tput setaf 3; read CREATE
+      if [ "$CREATE" = "s" ]; then
+          CREATE_BACKUP
+      elif [ "$CREATE" = "n" ]; then
+          usermenu
+      else
+          IMPORT_BACKUP
+      fi
+  else
+      BACKUPS=$(ls $BACKUPS_FOLDER | sort | sed "s/.zip//g" | nl -s ') ' | cut -d " " -f5-)
+      tput bold; tput setaf 7; echo "$BACKUPS"
+  fi
+  echo
+  tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA IMPORTAR [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+  
+  while true; do
+    if [ -z $NUMBER ] ; then
+        echo
+        tput bold; tput setaf 7; tput setab 1; echo "VOCÊ NÃO DIGITOU UM NÚMERO! TENTE NOVAMENTE"; tput sgr0
+        sleep 3s
+        tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA IMPORTAR [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+   elif  [ "$NUMBER" = "0" ]; then
+       menubackup
+       exit
+   elif echo $NUMBER | grep -q '[^0-9]'; then
+       echo
+       tput bold; tput setaf 7; tput setab 1; echo "VOCÊ DIGITOU UM NÚMERO INVÁLIDO! TENTE NOVAMENTE."; tput sgr0
+       sleep 3s
+       tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA IMPORTAR [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+   elif [ $NUMBER -gt $BACKUPS_NUMBER ]; then
+       echo
+       tput bold; tput setaf 7; tput setab 1; echo "ESTE BACKUP NÃO EXISTE NA LISTA DE BACKUPS! TENTE NOVAMENTE."; tput sgr0
+       sleep 3s
+       tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA IMPORTAR [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+  
+  
+  
+  
+  else
+  
+  SELECTING=$(ls $BACKUPS_FOLDER | sort | sed -n "$NUMBER"p)
+  tput cup $((1+$NUMBER)); tput bold; tput setaf 7; echo "IMPORTANDO BACKUP..."; tput cup $(($BACKUPS_NUMBER+4)); sleep 1s
+  cp $BACKUPS_FOLDER/$SELECTING / && cd /
+  tar -xvf $SELECTING > /dev/null && rm -rf $SELECTING
+  tput cup $((1+$NUMBER)) 25; tput bold; tput setaf 2; echo "BACKUP IMPORTADO COM SUCESSO!"; tput cup $(($BACKUPS_NUMBER+4)); sleep 2s
+  IMPORT_BACKUP
+fi
+done
+}
+
+function REMOVE_BACKUP ()
+{
+  clear
+  tput bold; tput setaf 3; echo -n "LISTA DE BACKUPS CRIADOS: "; tput setaf 2; echo "[0: RETORNAR AO MENU.]"
+  echo
+  BACKUPS_NUMBER=$(ls $BACKUPS_FOLDER | wc -l)
+  if [ $BACKUPS_NUMBER = "0" ]; then
+      tput bold; tput setaf 1; echo "VOCE NÃO POSSUI NENHUM BACKUP CRIADO!"
+      tput bold; tput setaf 7; echo "CRIE UM BACKUP PARA PROSSEGUIR COM ESTA FUNÇÃO!"
+      echo
+      tput bold; tput setaf 6; echo -n "DESEJA CRIAR UM BACKUP? [s/n]: "; tput setaf 3; read CREATE
+      if [ "$CREATE" = "s" ]; then
+          CREATE_BACKUP
+      elif [ "$CREATE" = "n" ]; then
+          usermenu
+      else
+          REMOVE_BACKUP
+      fi
+  else
+      BACKUPS=$(ls $BACKUPS_FOLDER | sort | sed "s/.zip//g" | nl -s ') ' | cut -d " " -f5-)
+      tput bold; tput setaf 7; echo "$BACKUPS"
+  fi
+  echo
+  tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA REMOVER [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+  while true; do
+    if [ -z $NUMBER ] ; then
+        echo
+        tput bold; tput setaf 7; tput setab 1; echo "Digite o número do backup para remover o mesmo!"; tput sgr0
+        sleep 3s
+        tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA REMOVER [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+   elif  [ "$NUMBER" = "0" ]; then
+       menubackup
+       exit
+   elif echo $NUMBER | grep -q '[^0-9]'; then
+       echo
+       tput bold; tput setaf 7; tput setab 1; echo "Este backup não existe na lista de backups criados! Tente novamente."; tput sgr0
+       sleep 3s
+       tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA REMOVER [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+   elif [ $NUMBER -gt $BACKUPS_NUMBER ]; then
+       echo
+       tput bold; tput setaf 7; tput setab 1; echo "Este backup não existe na lista de backups criados! Tente novamente."; tput sgr0
+       sleep 3s
+       tput cup $(($BACKUPS_NUMBER+3)); tput ed; tput bold; tput setaf 6; echo -n "NÚMERO DO BACKUP PARA REMOVER [1-$BACKUPS_NUMBER]: "; tput setaf 7; read NUMBER
+   else
+       SELECTING=$(ls $BACKUPS_FOLDER | sort | sed -n "$NUMBER"p)
+       tput cup $((1+$NUMBER)); tput bold; tput setaf 7; echo " REMOVENDO BACKUP..."; tput cup $(($BACKUPS_NUMBER+4))
+       sleep 1s
+       rm $BACKUPS_FOLDER/$SELECTING
+       tput cup $((1+$NUMBER)) 25; tput bold; tput setaf 2; echo "BACKUP REMOVIDO COM SUCESSO!"; tput cup $(($BACKUPS_NUMBER+4))
+       sleep 2s
+       REMOVE_BACKUP
+   fi
+ done
+}
+clear
+echo -e "$linha"
+echo -e "\033[01;32m BACKUPS:\033[01;37m $(ls $BACKUPS_FOLDER | wc -l)"
+echo -e "$linha"
+echo -e "\033[01;37m          MENU BACKUP"
+echo -e "$linha"
+echo -e "\033[01;31m O\033[01;36m -\033[01;37m [ SAIR DO MENU ]"
+echo -e "\033[01;31m 1\033[01;36m -\033[1;32m CRIAR UM BACKUP."
+echo -e "\033[01;31m 2\033[01;36m -\033[1;32m IMPORTAR UM BACKUP."
+echo -e "\033[01;31m 3\033[01;36m -\033[1;32m REMOVER UM BACKUP."
+echo -e "$linha"
+echo -ne "\033[1;37m OPÇÃO \033[1;31m0\033[1;36m-\033[1;31m3\033[1;37m: "; read OPTIONS
+case $OPTIONS in
+	0) usermenu
+     exit;;
+  1) CREATE_BACKUP
+     exit;;
+  2) IMPORT_BACKUP
+     exit;;
+  3) REMOVE_BACKUP
+     exit;;
+  4) other_functions
+     exit;;
+     *) menubackup;;  
+esac

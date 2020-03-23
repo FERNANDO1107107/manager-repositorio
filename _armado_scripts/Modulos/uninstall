@@ -1,0 +1,103 @@
+#!/bin/bash
+clear
+echo ""
+echo -ne "\033[01;31m Deseja desinstalar o\033[01;33m NEW ADM-VPS ? [n/s]:\033[01;37m "; read OPTIONS
+if [ -z $OPTIONS ]; then
+  uninstall
+  exit
+else
+if echo $OPTIONS | grep -q '[^n,s]'; then
+  uninstall
+  exit
+else
+if [ "$OPTIONS" = "n" ]; then
+  h
+  exit
+else
+if [ "$OPTIONS" = "s" ]; then
+  cd /bin  
+ rm -rf adm 1> /dev/null 2 > /dev/null
+ rm -rf autorun 1> /dev/null 2 > /dev/null 
+ rm -rf badudp 1> /dev/null 2 > /dev/null 
+ rm -rf bannerssh 1> /dev/null 2 > /dev/null 
+ rm -rf blockuser 1> /dev/null 2 > /dev/null 
+ rm -rf criaruser 1> /dev/null 2 > /dev/null 
+ rm -rf expirados 1> /dev/null 2 > /dev/null 
+ rm -rf h 1> /dev/null 2 > /dev/null 
+ rm -rf hostnamevps 1> /dev/null 2 > /dev/null  
+ rm -rf informacoes 1> /dev/null 2 > /dev/null 
+ rm -rf inst_dropbear 1> /dev/null 2 > /dev/null 
+ rm -rf inst_open 1> /dev/null 2 > /dev/null 
+ rm -rf inst_shadowsocks 1> /dev/null 2 > /dev/null 
+ rm -rf inst_socks 1> /dev/null 2 > /dev/null 
+ rm -rf inst_squid 1> /dev/null 2 > /dev/null 
+ rm -rf inst_sslstunel 1> /dev/null 2 > /dev/null
+ rm -rf instalar 1> /dev/null 2 > /dev/null 
+ rm -rf limiterconex 1> /dev/null 2 > /dev/null 
+ rm -rf limitermenu 1> /dev/null 2 > /dev/null 
+ rm -rf limiterstart 1> /dev/null 2 > /dev/null 
+ rm -rf limparcache 1> /dev/null 2 > /dev/null 
+ rm -rf menubackup 1> /dev/null 2 > /dev/null 
+ rm -rf monitoring 1> /dev/null 2 > /dev/null
+ rm -rf mudardata 1> /dev/null 2 > /dev/null 
+ rm -rf mudarsenha 1> /dev/null 2 > /dev/null
+ rm -rf portas 1> /dev/null 2 > /dev/null 
+ rm -rf reiniciar_vps 1> /dev/null 2 > /dev/null
+ rm -rf rserv 1> /dev/null 2 > /dev/null 
+ rm -rf removeuser 1> /dev/null 2 > /dev/null 
+ rm -rf senhart 1> /dev/null 2 > /dev/null 
+ rm -rf speedtest 1> /dev/null 2 > /dev/null
+ rm -rf tcpspeed 1> /dev/null 2 > /dev/null 
+ rm -rf uninstall 1> /dev/null 2 > /dev/null
+ rm -rf userdetalhes 1> /dev/null 2 > /dev/null
+ rm -rf usermenu 1> /dev/null 2 > /dev/null
+ rm -rf userteste 1> /dev/null 2 > /dev/null 
+ rm -rf velocidade 1> /dev/null 2 > /dev/null 
+  cd /etc
+  [[ -e /etc/ADMVPS ]] && rm -rf /etc/ADMVPS
+  cd /home
+  rm -rf DATABASE 1> /dev/null 2> /dev/null
+  if [ -d "/etc/squid" ]; then
+    cd /etc/squid
+    rm domains.txt 1> /dev/null 2> /dev/null
+    echo " " > squid.conf
+    if [ -f "/etc/init.d/squid" ]; then
+      /etc/init.d/squid restart 1> /dev/null 2> /dev/null
+    else
+      service squid restart 1> /dev/null 2> /dev/null
+    fi
+  fi
+  if [ -d "/etc/squid3" ]; then
+    cd /etc/squid3
+    rm domains.txt 1> /dev/null 2> /dev/null
+    echo " " > squid.conf
+    if [ -f "/etc/init.d/squid3" ]; then
+      /etc/init.d/squid3 restart 1> /dev/null 2> /dev/null
+    else
+      service squid3 restart 1> /dev/null 2> /dev/null
+    fi
+  fi
+  cat /etc/ssh/sshd_config | grep -v "Banner /home/DATABASE/bannerssh.txt" > ssh.txt
+  mv ssh.txt /etc/ssh/sshd_config 
+  cat /etc/ssh/sshd_config | grep -v "PasswordAuthentication yes" > ssh.txt
+  mv ssh.txt /etc/ssh/sshd_config 
+  cat /etc/ssh/sshd_config | grep -v "PermitEmptyPasswords yes" > ssh.txt
+  mv ssh.txt /etc/ssh/sshd_config 
+  cat /etc/ssh/sshd_config | grep -v "Port 443" > ssh.txt
+  mv ssh.txt /etc/ssh/sshd_config
+  if [ -f "/etc/init.d/ssh" ]; then
+    /etc/init.d/ssh restart 1> /dev/null 2> /dev/null
+  else
+    service ssh restart 1> /dev/null 2> /dev/null
+  fi
+  clear
+  echo ""
+  echo -e "\033[01;34m              \033[01;33m   NEW ADM-VPS "
+  echo ""
+  echo -e "\033[01;32m NEW ADM-VPS foi desinstalado com sucesso!\033[01;37m"
+  echo ""
+fi
+fi
+fi
+fi
+exit

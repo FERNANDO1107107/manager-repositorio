@@ -1,0 +1,59 @@
+#!/bin/bash
+if [[ `grep -c "^#ADM" /etc/sysctl.conf` -eq 0 ]]; then
+#INSTALA
+clear
+echo""
+echo -e "\033[1;37mDESEJA ATIVAR TCP SPEED?"
+echo""
+while [[ ${resposta} != @(s|S|n|N|y|Y) ]]; do
+echo -ne "\033[1;32m[S/N] \033[1;37m:"; read -e -i s resposta
+
+tput cuu1 && tput dl1
+done
+[[ "$resposta" = @(s|S|y|Y) ]] && {
+echo "#ADM" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_window_scaling = 1
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 16384 16777216
+net.ipv4.tcp_low_latency = 1
+net.ipv4.tcp_slow_start_after_idle = 0" >> /etc/sysctl.conf
+sysctl -p /etc/sysctl.conf > /dev/null 2>&1
+echo -e "\033[1;32mTCP ATIVO COM SUCESSO!"
+sleep 2
+h
+exit
+} || echo -e "\033[1;31mCANCELADO!"
+sllep 2
+h
+exit
+ else
+#REMOVE
+clear
+echo""
+echo -e "\033[1;37mDESEJA PARAR TCP SPEED?"
+echo""
+while [[ ${resposta} != @(s|S|n|N|y|Y) ]]; do
+echo -ne "\033[1;32m[S/N] \033[1;37m:"; read -e -i s resposta
+tput cuu1 && tput dl1
+done
+[[ "$resposta" = @(s|S|y|Y) ]] && {
+grep -v "^#ADM
+net.ipv4.tcp_window_scaling = 1
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 16384 16777216
+net.ipv4.tcp_low_latency = 1
+net.ipv4.tcp_slow_start_after_idle = 0" /etc/sysctl.conf > /tmp/syscl && mv -f /tmp/syscl /etc/sysctl.conf
+sysctl -p /etc/sysctl.conf > /dev/null 2>&1
+echo -e "\033[1;32mTCP PARADO COM SUCESSO!"
+sleep 2
+h
+exit
+} || echo -e "\033[1;31mCANCELADO!"
+sleep 2
+h
+exit
+fi

@@ -1,0 +1,183 @@
+#!/bin/bash
+linha="\033[0m\e[34m=================================" 
+mportas () {
+unset portas
+portas_var=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
+while read port; do
+var1=$(echo $port | awk '{print $1}') && var2=$(echo $port | awk '{print $9}' | awk -F ":" '{print $2}')
+[[ "$(echo -e $portas|grep "$var1 $var2")" ]] || portas+="$var1 $var2\n"
+done <<< "$portas_var"
+i=1
+echo -e "$portas"
+}
+fun_bar () {
+comando[0]="$1"
+comando[1]="$2"
+ (
+[[ -e $HOME/fim ]] && rm $HOME/fim
+${comando[0]} > /dev/null 2>&1
+${comando[1]} > /dev/null 2>&1
+touch $HOME/fim
+ ) > /dev/null 2>&1 &
+ tput civis
+echo -ne "\033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+while true; do
+   for((i=0; i<18; i++)); do
+   echo -ne "\033[1;31m#"
+   sleep 0.1s
+   done
+   [[ ! -e /usr/lib/ADMNETFREE ]] && rm -rf /bin/inst_socks > /dev/null 2>&1  
+   [[ -e $HOME/fim ]] && rm $HOME/fim && break
+   echo -e "\033[1;33m]"
+   sleep 1s
+   tput cuu1
+   tput dl1
+   echo -ne "\033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+done
+echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
+tput cnorm
+}
+
+
+pid_kill () {
+[[ -z $1 ]] && refurn 1
+pids="$@"
+for pid in $(echo $pids); do
+kill -9 $pid &>/dev/null
+done
+}
+remove_fun () {
+socks_off () {
+echo ""
+pidproxy3=$(ps x | grep "proxy.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidproxy3 ]] && pid_kill $pidproxy3
+pidproxy5=$(ps x | grep "PGet.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidproxy5 ]] && pid_kill $pidproxy5
+}
+clear
+echo ""
+echo -e "\033[1;31mDESATIVANDO O PROXY SOCKS\033[1;33m"
+echo ""
+fun_bar 'socks_off'
+echo ""
+echo -e "\033[1;32mPROXY SOCKS DESATIVADO COM SUCESSO!\033[1;33m"
+sleep 2
+instalar
+exit
+}
+iniciarsocks () {
+pidproxy3=$(ps x | grep -w  "proxy.py" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $pidproxy3 ]] && P3="\033[1;31m[\033[1;37mON\033[1;31m]" || P3="\033[1;37m[\033[1;31mOFF\033[1;37m]"
+
+clear
+echo -e "$linha"
+echo -e "\033[01;37m       CONFIGURAÇÃO SOCKS"
+echo -e "$linha"
+echo -e "\033[01;31m O\033[01;36m -\033[01;37m [ MENU INICIAL ]"
+echo -e "\033[01;31m 1\033[01;36m -\033[01;32m ATIVAR SOCKS PYTHON $P3"
+echo -e "\033[01;31m 2\033[01;376m -\033[01;32m PARAR SOCKS PYTHON"
+echo -e "$linha"
+IP=(meu_ip)
+while [[ -z $portproxy || $portproxy != @(0|[1-2]) ]]; do
+echo -ne "\033[1;37m OPÇÃO \033[01;31m0\033[01;36m-\033[01;31m2\033[1;37m:"; read portproxy
+tput cuu1 && tput dl1
+done
+ case $portproxy in
+    2) remove_fun && return;;
+    0) instalar
+  exit;;
+ esac
+
+while true; do
+clear
+echo -e "$linha"
+echo -e "\033[1;37m  INSTALADOR SOCKS NEW ADM-VPS"
+echo -e "$linha"
+echo -e "\033[1;33mAgora Escolha a Porta "
+echo -ne "\033[1;36mDigite a Porta: \033[1;37m"; read porta_socket
+    [[ $(mportas|grep -w "$porta_socket") ]] || break
+    echo ""
+    echo -e "\033[1;31mesta Porta Ja esta em Uso\033[0m"
+    sleep 2
+    unset porta_socket
+    done
+    [[  -z $porta_socket ]] && {
+     echo ""
+     echo -e "\033[1;31mNenhuma Porta Valida Foi Escolhida\033[0m"
+     echo ""
+     sleep 2
+     inst_socks
+     exit
+     }
+msgsocks=$(cat /etc/ADMVPS/proxy.py |grep -E "MSG =" | awk -F = '{print $2}' |cut -d "'" -f 2)
+echo ""
+echo -e "\033[1;32mSTATUS ATUAL: \033[1;37m$msgsocks"
+echo""
+echo -ne "\033[1;36mINFORME SEU STATUS\033[1;31m:\033[1;37m "; read -e -i NEW-ADMVPS texto_soket
+  if [[ -z "$texto_soket" ]]; then
+   echo ""
+   echo -e "\033[1;31mStatus invalido!"
+   sleep 2
+   inst_socks
+   exit
+  fi
+   echo -e "$linha"
+   echo -e "\033[01;31m O\033[01;36m -\033[01;37m [ MENU INICIAL ]"
+   echo -e "\033[01;31m 1\033[01;36m -\033[01;32m AZUL"
+   echo -e "\033[01;31m 2\033[01;36m -\033[01;32m VERDE"
+   echo -e "\033[01;31m 3\033[01;36m -\033[01;32m VERMELHO"
+   echo -e "\033[01;31m 4\033[01;36m -\033[01;32m AMARELO"
+   echo -e "\033[01;31m 5\033[01;36m -\033[01;32m ROSA"
+	 echo -e "\033[01;31m 6\033[01;36m -\033[01;32m CYANO"
+   echo -e "\033[01;31m 7\033[01;36m -\033[01;32m LARANJA"
+   echo -e "\033[01;31m 8\033[01;36m -\033[01;32m ROXO"
+	 echo -e "\033[01;31m 9\033[01;36m -\033[01;32m PRETO"
+	 echo -e "\033[01;31m1O\033[01;36m -\033[01;32m SEM COR"
+	 echo -e "$linha"
+	 echo -ne "\033[1;37mOPÇÃO \033[1;31m0\033[1;36m-\033[1;31m10\033[1;37m:"; read sts_cor
+   if [[ "$sts_cor" = "1" ]] || [[ "$sts_cor" = "01" ]]; then
+	  cor_sts='blue'
+	 elif [[ "$sts_cor" = "2" ]] || [[ "$sts_cor" = "02" ]]; then
+		cor_sts='green'
+	 elif [[ "$sts_cor" = "3" ]] || [[ "$sts_cor" = "03" ]]; then
+		cor_sts='red'
+	 elif [[ "$sts_cor" = "4" ]] || [[ "$sts_cor" = "04" ]]; then
+		cor_sts='yellow'
+	 elif [[ "$sts_cor" = "5" ]] || [[ "$sts_cor" = "05" ]]; then
+	  cor_sts='#F535AA'
+	 elif [[ "$sts_cor" = "6" ]] || [[ "$sts_cor" = "06" ]]; then
+		cor_sts='cyan'
+	 elif [[ "$sts_cor" = "7" ]] || [[ "$sts_cor" = "07" ]]; then
+		cor_sts='#FF7F00'
+	 elif [[ "$sts_cor" = "8" ]] || [[ "$sts_cor" = "08" ]]; then
+		cor_sts='#9932CD'
+	 elif [[ "$sts_cor" = "9" ]] || [[ "$sts_cor" = "09" ]]; then
+		cor_sts='black'
+	 elif [[ "$sts_cor" = "10" ]]; then
+		cor_sts='null'
+	 elif  [ "$sts_cor" = "0" ]; then
+    instalar
+    exit
+	 else
+	  echo -e "\n\033[1;31mOPCAO INVALIDA !"
+		cor_sts='null'
+	 fi
+    fun_msgsocks () {
+    msgsocks2=$(cat /etc/ADMVPS/proxy.py |grep "MSG =" | awk -F = '{print $2}')
+    sed -i "s/$msgsocks2/ '$texto_soket'/g" /etc/ADMVPS/proxy.py
+    sleep 1
+    cor_old=$(grep 'color=' /etc/ADMVPS/proxy.py | cut -d '"' -f2)
+	  sed -i "s/$cor_old/$cor_sts/g" /etc/ADMVPS/proxy.py
+}
+   echo ""
+   echo -e "\033[1;32mALTERANDO STATUS!"
+                
+   fun_bar 'fun_msgsocks'
+   case $portproxy in
+   1) screen -dmS screen python /etc/ADMVPS/proxy.py "$porta_socket" "$texto_soket";;
+   2) gettunel_fun "$porta_socket";;
+   esac
+   echo ""
+   echo -e "\033[1;32mPROXY SOCKS ATIVADO COM SUCESSO\033[1;33m"             
+   sleep 2
+   instalar
+   exit           
+}
+iniciarsocks

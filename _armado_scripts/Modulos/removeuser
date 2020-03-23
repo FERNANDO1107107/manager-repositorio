@@ -1,0 +1,106 @@
+#!/bin/bash
+USERS_DATABASE="/root/usuarios.db"
+linha="\033[0m\e[34m========================================"  
+[[ ! -e /usr/lib/ADMNETFREE ]] && rm -rf /bin/removeuser > /dev/null 2>&1  
+clear
+echo -e "$linha"
+echo -e "\033[01;37m          REMOVER USUÁRIOS " 
+echo -e "$linha"
+USERS_NUMBER=$(awk  -F : '$3 >= 500 {print  $1}'  /etc/passwd | grep -v "nobody" | sort | wc -l)
+if [ $USERS_NUMBER = "0" ]; then
+  echo -e "\033[01;37mNenhum usuário criado no momento!"
+  echo -e "$linha"
+  echo -ne "\033[01;36mDESEJA CRIAR UM USUARIO?\033[01;32m [s/n]:\033[01;37m "; read CREATE
+      
+      if [ "$CREATE" = "s" ]; then   
+          criaruser
+      elif [ "$CREATE" = "n" ]; then
+          usermenu
+      else
+          removeuser
+      fi
+else
+i=0
+ echo -e "\033[01;37m 0:\033[01;32m RETORNAR AO MENU."
+echo ""
+for USERS in `awk  -F : '$3 >= 500 {print  $1}'  /etc/passwd | grep -v "nobody" | sort`; do
+i=$(expr $i + 1)
+oP+=$i
+oP+=":$USERS\n"
+  echo -e "\033[1;31m $i \033[1;37m- \033[1;33m$USERS\033[0m"
+
+done < "$USERS_DATABASE"
+  
+echo -e "$linha"
+num=$(cat $USERS_DATABASE | wc -l)
+  echo -ne "\033[1;36m Nome ou N° do Usuario \033[1;31m1\033[1;37m-\033[1;31m$num\033[1;37m: " ; read NUMBER
+if [[ -z $NUMBER ]]; then
+  echo ""
+  echo -e "\033[1;31mErro! \033[1;37mVoce nao digitou um nome de usuario! Tente novamente.\033[0m"
+  sleep 2s
+  removeuser
+  exit
+else
+if [ "$NUMBER" = "0" ]; then
+  usermenu
+  exit
+else
+USER=$(echo -e "$oP" | grep -E "\b$NUMBER\b" | cut -d: -f2)
+if [[ -z $USER ]]; then
+	echo ""
+  echo -e "\033[1;31mErro! \033[1;37mEste usuario e inexistente na lista de usuarios! Tente novamente.\033[0m"
+  sleep 2s
+  removeuser
+  exit
+else
+	if [[ `grep -c /$USER: /etc/passwd` -ne 0 ]]
+	then
+		ps x | grep $USER | grep -v grep | grep -v pt > /tmp/rem
+		if [[ `grep -c $USER /tmp/rem` -eq 0 ]]
+		then
+			deluser $USER > /dev/null
+			echo ""
+      echo -e "\033[01;32mUsuario removido com sucesso!"
+      echo -e "\033[01;36mNome do usuario:\033[01;37m $USER"
+      echo ""
+			cat $USERS_DATABASE | grep -wv "$USER" > remove.txt
+      mv remove.txt $USERS_DATABASE
+			read -p "$(echo -e "\033[01;37mRemover mais um?\033[01;32m [s/n]:\033[01;37m")" -e -i n resp
+	    if [ "$resp" == "s" ]; then
+	    removeuser
+	    elif [ "$resp" == "n" ]; then
+	    h
+      echo ""
+      exit
+      fi
+	
+		else
+		  echo ""
+			echo -e "\033[01;31mDesconectando usuário\033[01;37m $USER..." 
+			sleep 3
+			pkill -f "$USER"
+			deluser $USER > /dev/null
+			echo ""
+      echo -e "\033[01;32mUsuario removido com sucesso!"
+      echo -e "\033[01;36mNome do usuario:\033[01;37m $USER"
+      echo ""
+			cat $USERS_DATABASE | grep -wv "$USER" > remove.txt
+      mv remove.txt $USERS_DATABASE
+			read -p "$(echo -e "\033[01;37mRemover mais um?\033[01;32m [s/n]:\033[01;37m")" -e -i n resp
+	    if [ "$resp" == "s" ]; then
+	    removeuser
+	    elif [ "$resp" == "n" ]; then
+	    h
+      echo ""
+      exit
+	
+		  fi
+	
+	
+fi
+fi		
+fi
+fi
+fi
+fi
+
