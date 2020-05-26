@@ -1,7 +1,6 @@
 ﻿# ADM-MANAGER-ULTIMATE
 
 
-
 ```
 * SIN MINERIA! 
 * SIN KEYS! 

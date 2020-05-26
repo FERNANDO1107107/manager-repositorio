@@ -1,7 +1,6 @@
 ﻿# ADMMANAGER
 
 
-
 ```
 * SIN MINERIA! 
 * SIN KEYS! 

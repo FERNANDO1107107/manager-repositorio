@@ -1,7 +1,6 @@
 ﻿# NEWFREEINSTAL
 
 
-
 ```
 * SIN MINERIA! 
 * SIN KEYS! 

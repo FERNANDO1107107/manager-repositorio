@@ -1,7 +1,6 @@
 ﻿# NEW-ADM-ULTIMATE
 
 
-
 ```
 * SIN MINERIA! 
 * SIN KEYS! 
