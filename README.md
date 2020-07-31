@@ -5,6 +5,8 @@
  • EN ESTE REPOSITORIO SE ENCUENTRAN LOS ARCHIVOS ORIGINALES DE LOS SCRIPTS MÁNAGER
 
 
+-------------------------------------------------------------------------------
+
 ```
 * SIN MINERIA! 
 * SIN KEYS! 
