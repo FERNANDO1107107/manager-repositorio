@@ -1,4 +1,8 @@
-# SSHPLUS-MANAGER
+﻿# SSHPLUS-MANAGER
+
+**Repositorio Script**
+
+ • EN ESTE REPOSITORIO SE ENCUENTRAN LOS ARCHIVOS ORIGINALES DE LOS SCRIPTS MÁNAGER
 
 
 -------------------------------------------------------------------------------
@@ -12,8 +16,8 @@
 ```
 
 ```
-? https://t.me/admmanagerfree ?
+☆ https://t.me/admmanagerfree ☆
 
 ```
 
-**By: [  ???? ]**
+**By: [  ⃘⃤꙰✰ ]**
